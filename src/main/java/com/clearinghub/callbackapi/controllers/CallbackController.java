@@ -3,6 +3,7 @@ package com.clearinghub.callbackapi.controllers;
 import com.clearinghub.callbackapi.configs.Constants;
 import com.clearinghub.callbackapi.dtos.responses.ResponseArray;
 import com.clearinghub.callbackapi.services.CallbackServiceImpl;
+import com.clearinghub.callbackapi.utils.LoggingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +41,14 @@ public class CallbackController {
     }
 
     @PostMapping(Constants.WHATSAPP_API_ENDPOINT)
-    public ResponseEntity<ResponseArray> receiveTwilioWhatsappMessage(@RequestParam Map<String, String> messageBody) throws JsonProcessingException {
-        callbackService.receiveTwilioCallback(messageBody);
-        return new ResponseEntity<>(HttpStatus.OK);
+    //public ResponseEntity<ResponseArray> receiveTwilioWhatsappMessage(@RequestParam Map<String, String> messageBody) throws JsonProcessingException {
+    public ResponseEntity<ResponseArray> receiveTwilioWhatsappMessage(@RequestParam final String to, @RequestParam final String body) throws JsonProcessingException {
+        final String METHOD = "send whatsapp ";
+        logger.info(LoggingUtil.getEnteringMethodMessage(METHOD));
+        ResponseArray responseArray = callbackService.sendWhatsApp(to, body);
+        logger.info(METHOD + Constants.RESPONSE_PREFIX_MESSAGE + responseArray.toString());
+        logger.info(LoggingUtil.getExitingMethodMessage(METHOD));
+        return new ResponseEntity<>(responseArray, HttpStatus.valueOf(responseArray.getStatus()));
     }
 
     @PostMapping("/status_callback")
