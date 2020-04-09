@@ -9,16 +9,14 @@ package com.clearinghub.callbackapi.configs;
  */
 public class Constants {
 
-    String BASE_API_PATH            = "/api/v1";
-    String SMS_API_ENDPOINT         = "/sms";
-    String WHATSAPP_API_ENDPOINT    = "/whatsapp";
-    String VOICE_API_ENDPOINT       = "/voice";
+    public static final String BASE_API_PATH            = "/api/v1";
+    public static final String WHATSAPP_API_ENDPOINT    = "/whatsapp_incoming_message";
 
-    String WHATSAPP_PREFIX              = "whatsapp:";
-    String TWIML_BODY_QUERY_PARAM_KEY   = "?body=";
+    public static final String WHATSAPP_PREFIX              = "whatsapp:";
+    public static final String TWIML_BODY_QUERY_PARAM_KEY   = "?body=";
 
-    String WHATSAPP_MESSAGE_PREFIX          = "Your Message Code is ";
-    String INVALID_URI_EXCEPTION_MESSAGE    = "Error While trying to build URI";
-    String RESPONSE_PREFIX_MESSAGE          = " Response: ";
-    String GENERAL_ERROR_MESSAGE            = "Oops something went wrong, please try again later";
+    public static final String WHATSAPP_MESSAGE_PREFIX          = "Your Message Code is ";
+    public static final String INVALID_URI_EXCEPTION_MESSAGE    = "Error While trying to build URI";
+    public static final String RESPONSE_PREFIX_MESSAGE          = " Response: ";
+    public static final String GENERAL_ERROR_MESSAGE            = "Oops something went wrong, please try again later";
 }
