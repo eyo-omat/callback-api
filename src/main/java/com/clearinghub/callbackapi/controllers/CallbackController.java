@@ -34,26 +34,46 @@ public class CallbackController {
     @NonNull
     private final CallbackServiceImpl callbackService;
 
+    /**
+     * Receive message callback response entity.
+     *
+     * @param messageBody the message body
+     * @return the response entity
+     * @throws JsonProcessingException the json processing exception
+     */
     @PostMapping("/incoming")
     public ResponseEntity<ResponseArray> receiveMessageCallback(@RequestBody Map<String, String> messageBody) throws JsonProcessingException {
         callbackService.receiveTwilioCallback(messageBody);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Receive twilio whatsapp message response entity.
+     *
+     * @param messageBody the message body
+     * @return the response entity
+     * @throws JsonProcessingException the json processing exception
+     */
     @PostMapping(Constants.WHATSAPP_API_ENDPOINT)
-    //public ResponseEntity<ResponseArray> receiveTwilioWhatsappMessage(@RequestParam Map<String, String> messageBody) throws JsonProcessingException {
-    public ResponseEntity<ResponseArray> receiveTwilioWhatsappMessage(@RequestParam final String to, @RequestParam final String body) throws JsonProcessingException {
+    public ResponseEntity<ResponseArray> receiveTwilioWhatsappMessage(@RequestParam Map<String, String> messageBody) throws JsonProcessingException {
         final String METHOD = "send whatsapp ";
         logger.info(LoggingUtil.getEnteringMethodMessage(METHOD));
-        ResponseArray responseArray = callbackService.sendWhatsApp(to, body);
+        logger.info("Received Data: " + messageBody);
+        ResponseArray responseArray = callbackService.sendWhatsApp(messageBody.get("From"), messageBody.get("Body"));
         logger.info(METHOD + Constants.RESPONSE_PREFIX_MESSAGE + responseArray.toString());
         logger.info(LoggingUtil.getExitingMethodMessage(METHOD));
         return new ResponseEntity<>(responseArray, HttpStatus.valueOf(responseArray.getStatus()));
     }
 
+    /**
+     * Receive status callback response entity.
+     *
+     * @param statusBody the status body
+     * @return the response entity
+     */
     @PostMapping("/status_callback")
-    public ResponseEntity<ResponseArray> receiveStatusCallback(@RequestBody Map<String, String> statusBody) {
-
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ResponseArray> receiveStatusCallback(@RequestParam Map<String, String> statusBody) {
+        logger.info("Received Status Data: " + statusBody);
+        return new ResponseEntity<>(new ResponseArray(), HttpStatus.OK);
     }
 }

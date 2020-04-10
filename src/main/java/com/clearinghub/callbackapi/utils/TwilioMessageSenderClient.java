@@ -1,5 +1,6 @@
 package com.clearinghub.callbackapi.utils;
 
+import com.clearinghub.callbackapi.configs.Configs;
 import com.clearinghub.callbackapi.configs.Constants;
 import com.clearinghub.callbackapi.domians.twilio.TwilioClient;
 import com.twilio.rest.api.v2010.account.Message;
@@ -27,6 +28,9 @@ public class TwilioMessageSenderClient {
     @NonNull
     private TwilioClient twilioClient;
 
+    @NonNull
+    private Configs config;
+
     /**
      * Send whats app message.
      *
@@ -38,7 +42,7 @@ public class TwilioMessageSenderClient {
         final String METHOD = "sendWhatsapp ";
         Message whatsAppMessage = null;
 
-        PhoneNumber destinationPhoneNumber = new PhoneNumber(Constants.WHATSAPP_PREFIX + destination);
+        PhoneNumber destinationPhoneNumber = new PhoneNumber(destination);
         whatsAppMessage = sendMessage(destinationPhoneNumber, twilioClient.getWhatsAppNumber(), buildWhatsAppMessage(body));
 
         logger.info(String.format("%s%s", METHOD, whatsAppMessage.toString()));
@@ -50,6 +54,9 @@ public class TwilioMessageSenderClient {
     }
 
     private String buildWhatsAppMessage(String body) {
+        if (body.trim().toLowerCase().isEmpty() || config.getGreetinglist().containsValue(body.trim().toLowerCase())) {
+            return "Hello new user";
+        }
         return Constants.WHATSAPP_MESSAGE_PREFIX + body;
     }
 }

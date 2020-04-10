@@ -8,8 +8,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twilio.Twilio;
 import com.twilio.exception.ApiException;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,14 +45,7 @@ public class CallbackServiceImpl implements MessageSenderService{
         String toNumber = twilioCallbackBody.get("From").replace("whatsapp:", "");
         System.out.println("This is Body: " + body + "-- This is from number: " + toNumber);
         System.out.println("This is the greeting map: " + config.getGreetinglist().toString());
-        if (body.trim().toLowerCase().isEmpty() && config.getGreetinglist().containsValue(body.trim().toLowerCase())) {
-            try {
-                Message message = Message.creator(new PhoneNumber(toNumber), new PhoneNumber(config.getTwilioNumber()), "Okay this has to work").create();
-                System.out.println("here is my id:"+message.getSid());
-            } catch (Exception ex){
-                System.out.println("Exception occured: " + ex);
-            }
-        }
+
         //return new ResponseArray();
     }
 

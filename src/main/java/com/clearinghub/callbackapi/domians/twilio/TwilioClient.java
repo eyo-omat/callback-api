@@ -20,6 +20,4 @@ public class TwilioClient {
     private TwilioRestClient twilioRestClient;
     private PhoneNumber fromNumber;
     private PhoneNumber whatsAppNumber;
-    private String twiMLBinUrl;
-
 }
