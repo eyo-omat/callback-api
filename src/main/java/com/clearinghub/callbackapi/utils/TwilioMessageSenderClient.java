@@ -1,8 +1,8 @@
 package com.clearinghub.callbackapi.utils;
 
 import com.clearinghub.callbackapi.configs.Configs;
-import com.clearinghub.callbackapi.configs.Constants;
 import com.clearinghub.callbackapi.domians.twilio.TwilioClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.type.PhoneNumber;
@@ -31,6 +31,9 @@ public class TwilioMessageSenderClient {
     @NonNull
     private Configs config;
 
+    @NonNull
+    private Utilities utilities;
+
     /**
      * Send whats app message.
      *
@@ -38,7 +41,7 @@ public class TwilioMessageSenderClient {
      * @param body        the body
      * @return the message
      */
-    public Message sendWhatsApp(final String destination, final String body) {
+    public Message sendWhatsApp(final String destination, final String body) throws JsonProcessingException {
         final String METHOD = "sendWhatsapp ";
         Message whatsAppMessage = null;
 
@@ -53,10 +56,10 @@ public class TwilioMessageSenderClient {
         return new MessageCreator(destination, sender, body).create(twilioClient.getTwilioRestClient());
     }
 
-    private String buildWhatsAppMessage(String body) {
+    private String buildWhatsAppMessage(String body) throws JsonProcessingException {
         if (body.trim().toLowerCase().isEmpty() || config.getGreetinglist().containsValue(body.trim().toLowerCase())) {
             return "Hello new user";
         }
-        return Constants.WHATSAPP_MESSAGE_PREFIX + body;
+        return utilities.invokeWiki(body);
     }
 }
